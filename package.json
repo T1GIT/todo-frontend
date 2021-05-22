@@ -8,7 +8,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^3.1.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
+    "pug-plain-loader": "^1.1.0",
     "vue": "^3.0.0",
     "vuex": "^4.0.0-0"
   },
