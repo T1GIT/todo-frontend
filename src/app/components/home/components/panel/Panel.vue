@@ -19,7 +19,7 @@
       </div>
       <button @click="addCategory">➕</button>
     </div>
-    <div :class="$style.task_panel" v-if="selectedCategory">
+    <div :class="$style.task_panel">
       <p>Задачи</p>
       <div :class="$style.list_item" v-for="(task, index) of tasks"
            @click="selectTask(task)"
@@ -39,12 +39,12 @@
       </div>
       <button @click="addTask">➕</button>
     </div>
-    <div :style="{ margin: '10px' }" v-if="selectedTask">
+    <div :style="{ margin: '10px' }">
       <p>Описание</p>
       <textarea v-model="selectedTask.description"
                 :class="$style.area"
                 ref="desc"
-                @change="changeTask">
+                @change="changeTask(this.selectedTask)">
       </textarea>
     </div>
   </div>
@@ -62,8 +62,16 @@ export default {
       tasks: [],
       editCategory: -1,
       editTask: -1,
-      selectedCategory: null,
-      selectedTask: null
+      selectedCategory: {
+        id: 0,
+        name: ''
+      },
+      selectedTask: {
+        id: 0,
+        title: '',
+        description: '',
+        completed: ''
+      }
     }
   },
   mounted () {
@@ -86,6 +94,7 @@ export default {
           id: categoryId,
           name: ''
         })
+        this.selectedCategory = this.categories[this.categories.length - 1]
         this.editCategory = this.categories.length - 1
       })
     },
@@ -98,10 +107,12 @@ export default {
       categoryService.remove(category.id)
     },
     selectCategory (category) {
-      this.selectedCategory = category
-      taskService.getAll(category.id).then(tasks => {
-        this.tasks = tasks
-      })
+      if (this.selectedCategory !== category) {
+        this.selectedCategory = category
+        taskService.getAll(category.id).then(tasks => {
+          this.tasks = tasks
+        })
+      }
     },
     addTask () {
       taskService.add(this.selectedCategory.id, { title: '' }).then(taskId => {
@@ -111,6 +122,7 @@ export default {
           description: '',
           completed: ''
         })
+        this.selectedTask = this.tasks[this.tasks.length - 1]
         this.editTask = this.tasks.length - 1
       })
     },
@@ -126,8 +138,10 @@ export default {
       taskService.remove(task.id)
     },
     selectTask (task) {
-      this.selectedTask = task
-      this.$refs.desc.focus()
+      if (this.selectedTask !== task) {
+        this.selectedTask = task
+        this.$refs.desc.focus()
+      }
     }
   }
 }
