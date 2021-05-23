@@ -29,6 +29,10 @@ export default {
 </script>
 
 <style lang="sass">
+
+*
+  font-family: "Trebuchet MS", sans-serif
+
 html, body
   margin: 0 !important
   padding: 0 !important

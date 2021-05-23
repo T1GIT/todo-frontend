@@ -1,5 +1,8 @@
 <template>
-  <form v-show="this.$store.getters.isReady" :class="$style.form">
+  <form
+    @keypress.enter="authorise"
+    v-show="this.$store.getters.isReady"
+    :class="$style.form">
     <div :class="$style.header">
       <button type="button" @click="changeMode('login')">Вход</button>
       <button type="button" @click="changeMode('register')">Регистрация</button>
@@ -19,6 +22,7 @@
            v-model="form.psw.value"
            @keydown="debouncedValidatePsw">
     <template v-if="showExtraFields">
+      <hr>
       <label for="rePsw">{{form.rePsw.advice}}</label>
       <input id="rePsw"
              placeholder="Пароль ещё раз"
@@ -157,20 +161,38 @@ export default {
 </script>
 
 <style module lang="sass">
-.header
-  height: 50px
-  display: flex
-  flex-direction: row
-  align-items: center
-  button
-    margin: 20px
 .form
+  position: relative
   display: flex
   flex-direction: column
   align-items: center
-  input
-    width: 200px
-    margin: 2px
-.submit
-  margin: 20px
+  hr
+    height: 3px
+    border: none
+    border-radius: 2px
+    width: 90%
+    outline: none
+    background: white
+  input, button
+    border-radius: 4px
+    outline: none !important
+    border: 3px solid transparent
+    box-sizing: content-box
+    height: 20px
+    width: 280px
+    margin: 5px 0
+    padding: 3px
+    &:hover
+      border-color: #3c3ca5
+  .header
+    width: 280px
+    height: 50px
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-around
+    button
+      width: 100px
+  .submit
+    margin: 20px
 </style>

@@ -7,37 +7,46 @@
            type="email"
            autocomplete="email"
            v-model="form.email.value"
-           @keydown="debouncedValidateEmail">
+           @keydown="debouncedValidateEmail"
+           @keydown.enter="changeEmail"
+    >
     <button type="button"
             :disabled="form.email.advice || !form.email.value"
             @click="changeEmail">
       Изменить
     </button>
+    <hr>
     <label for="psw">{{ form.psw.advice }}</label>
     <input id="psw"
            placeholder="Пароль"
            type="password"
-           autocomplete="password"
+           readonly
+           onfocus="this.removeAttribute('readonly')"
            v-model="form.psw.value"
-           @keydown="debouncedValidatePsw">
+           @keydown="debouncedValidatePsw"
+           @keydown.enter="changePsw"
+    >
     <button type="button"
             :disabled="form.psw.advice || !form.psw.value"
             @click="changePsw">
       Изменить
     </button>
-    <input type="text" placeholder="Имя" autocomplete="name" v-model="form.name">
-    <input type="text" placeholder="Фамилия" autocomplete="surname" v-model="form.surname">
-    <input type="text" placeholder="Отчество" autocomplete="patronymic" v-model="form.patronymic">
-    <input type="date" placeholder="Дата рождения" autocomplete="date" v-model="form.birthdate">
+    <hr>
+    <form :class="$style.additional_form"  @keydown.enter="changeAdditional">
+      <input type="text" placeholder="Имя" autocomplete="name" v-model="form.name">
+      <input type="text" placeholder="Фамилия" autocomplete="surname" v-model="form.surname">
+      <input type="text" placeholder="Отчество" autocomplete="patronymic" v-model="form.patronymic">
+      <input type="date" placeholder="Дата рождения" autocomplete="date" v-model="form.birthdate">
+    </form>
     <button type="button"
             @click="changeAdditional">
       Изменить
     </button>
+    <hr>
     <button type="button"
             @click="deleteUser">
       Удалить
     </button>
-    <hr>
     <button type="button"
             @click="logout">
       Выйти
@@ -155,20 +164,49 @@ export default {
 
 .button
   +right-up-attach
-
+  outline: none
+  top: 3px
+  right: 3px
+  background: #f1d5d5
+  border-radius: 4px
+  border: 3px solid transparent
+  &:hover
+    border-color: #3c3ca5
 .menu
-  +right-up-attach
+  position: absolute
   display: flex
   flex-direction: column
   align-items: center
   padding: 5px
-  background: gray
-  top: 30px
-  width: max-content
+  background: #f1d5d5
+  top: 35px
+  right: 10px
+  width: 300px
   height: max-content
-
-  *
-    width: 100%
-    margin: 5px
+  border-radius: 5px
+  hr
+    height: 3px
+    border: none
+    border-radius: 2px
+    width: 90%
+    outline: none
+    background: white
+  input, button
+    border-radius: 4px
+    outline: none !important
+    border: 3px solid transparent
+    box-sizing: content-box
+    height: 20px
+    width: 280px
+    margin: 5px 0
     padding: 3px
+    &:hover, &:focus
+      border-color: #3c3ca5
+.additional_form
+  margin: 0
+  padding: 0
+  width: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
 </style>
